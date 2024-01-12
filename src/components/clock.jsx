@@ -1,6 +1,6 @@
 import {React, useState, useEffect} from "react";
 
-function Clock({name, hours, minutes, seconds, id, setDone}){
+function Clock({name, hours, minutes, seconds, id, setDone, deadTimer}){
 
     const [CHours, setCHours] = useState();
     const [CMinutes, setCMinutes] = useState();
@@ -9,6 +9,7 @@ function Clock({name, hours, minutes, seconds, id, setDone}){
 
     const loadState = () =>{
         setCHours(hours);
+        console.log(typeof minutes)
         setCMinutes(minutes);
         setCSecondes(seconds);
     }
@@ -18,10 +19,10 @@ function Clock({name, hours, minutes, seconds, id, setDone}){
 
     useEffect(()=>{
         const timeoutId = setTimeout(() => {
-            if(PlayTimer === false){
+            if(CHours === 0 && CMinutes === 0 && CSecondes === 0){
+                console.log('dentro la funzione');
+                deadTimer(id);
                 setDone(id);
-            }else if(CHours === 0 && CMinutes === 0 && CSecondes === 0){
-                setPlayTimer(false);
             }else if(CMinutes === 0 && CSecondes === 0){
                 setCHours((CHours)=> CHours-1);
                 setCMinutes(59);
@@ -34,11 +35,13 @@ function Clock({name, hours, minutes, seconds, id, setDone}){
             }
             
             
-          }, 1000);
-          return () => {
-            clearInterval(timeoutId);
-          };
+        }, 1000);
+
+        return () => {
+        clearInterval(timeoutId);
+        };
     },[CHours, CMinutes, CSecondes, PlayTimer])
+    
     return(
         <div className="max-w-[40%] overflow-hidden py-10 px-5 rounded-[10px] bg-[#395998]">
             <div className="text-center pb-4 pt-1">

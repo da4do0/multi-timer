@@ -12,21 +12,18 @@ function App() {
     const modID = [...IDTimer].find((obj => obj.IDClock === id));
     const newIDTimer = [...IDTimer];
     newIDTimer[modID.IDClock].done = true;
-      debugger;
-      setIDTimer(newIDTimer);
-      console.log(modID.IDClock);
-      newDeadTimer(modID.IDClock);
+    setIDTimer(newIDTimer);
   }
 
   const newDeadTimer = (id)=>{
-    const tempDeadTimer = [...clock].filter(obg => obg.IDClock != id);
-    setClock([...clock].filter(obg => obg.IDClock == id));
+    const tempDeadTimer = [...clock].filter(obg => obg.IdClock != id);    
+    setClock([...clock].filter(obg => obg.IdClock != id));
     setDeadTimer([...deadTimer, tempDeadTimer]);
 
   }
 
   useEffect(()=>{
-    console.log(clock);
+    console.log(deadTimer);
   },[clock])
 
   return (
@@ -47,9 +44,10 @@ function App() {
               id={item.IdClock}
               name={item.ClockName}
               hours={item.Hours}
-              minutes={item.Minutes}
+              minutes={parseInt(item.Minutes, 10)}
               seconds={item.Seconds}
               setDone={setDone}
+              deadTimer={newDeadTimer}
             />
           ))}
         </div>
