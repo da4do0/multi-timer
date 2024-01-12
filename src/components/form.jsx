@@ -1,35 +1,35 @@
 import { useEffect, useState } from "react";
 
 
-function FormClock({setClock, clock}){
+function FormClock({setClock, clock, setIDTimer, IDTimerApp}){
     const [newClock, setNewClock] = useState({});
+    const [idClock, setIdClock] = useState(0);
 
     const updateClock = (e) => {
         e.preventDefault();
         const {name, value} = e.target;
         setNewClock({...newClock, [name]: value})
     }
-    /* console.log(Object.values(clock)[2]) */
     
     const newSetClock = (e)=>{
         e.preventDefault();
-        if(!('Seconds' in newClock) && !('Minutes' in newClock) && !('Hours' in newClock) && !('ClockName' in newClock)){
-            alert("ciao");
-        }else{
-            const realClock = {
-                'ClockName': newClock.ClockName,
-                'Hours': newClock.Hours,
-                'Minutes': newClock.Minutes,
-                'Seconds': newClock.Seconds,
-            }
-
-            setClock([...clock, newClock])
+        const realClock = {
+            'IdClock': idClock,
+            'ClockName': (newClock.ClockName == undefined )? "no title" : newClock.ClockName,
+            'Hours': (newClock.Hours == undefined)? 0 : newClock.Hours,
+            'Minutes': (newClock.Minutes== undefined)? 0 : newClock.Minutes,
+            'Seconds': (newClock.Seconds== undefined)? 0 : newClock.Seconds
         }
+        const IDTimer = {
+            'IDClock': idClock,
+            'done': false
+        }
+        setIDTimer([...IDTimerApp, IDTimer]);
+        setClock([...clock, realClock]);
+        setIdClock((IdClock) => IdClock + 1);
+        
     }
 
-    /* useEffect(() =>{
-        console.log(clock);
-    }) */
     return(
         <>
             <form onSubmit={newSetClock} className=" w-[60%] bg-[#395998] rounded-[10px] p-5">

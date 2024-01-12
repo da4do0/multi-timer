@@ -1,10 +1,11 @@
 import {React, useState, useEffect} from "react";
 
-function Clock({name, hours, minutes, seconds}){
+function Clock({name, hours, minutes, seconds, id, setDone}){
 
     const [CHours, setCHours] = useState();
     const [CMinutes, setCMinutes] = useState();
     const [CSecondes, setCSecondes] = useState();
+    const [PlayTimer, setPlayTimer] = useState(true);
 
     const loadState = () =>{
         setCHours(hours);
@@ -13,12 +14,15 @@ function Clock({name, hours, minutes, seconds}){
     }
     useEffect(()=>{
         loadState(); 
-        console.log('renderizzato');
     },[])
 
     useEffect(()=>{
         const timeoutId = setTimeout(() => {
-            if(CMinutes === 0 && CSecondes === 0){
+            if(PlayTimer === false){
+                setDone(id);
+            }else if(CHours === 0 && CMinutes === 0 && CSecondes === 0){
+                setPlayTimer(false);
+            }else if(CMinutes === 0 && CSecondes === 0){
                 setCHours((CHours)=> CHours-1);
                 setCMinutes(59);
                 setCSecondes(59);
@@ -28,12 +32,13 @@ function Clock({name, hours, minutes, seconds}){
             }else{
                 setCSecondes((CSecondes)=> CSecondes-1);
             }
+            
+            
           }, 1000);
           return () => {
             clearInterval(timeoutId);
           };
-    },[CHours, CMinutes, CSecondes])
-    console.log(hours)
+    },[CHours, CMinutes, CSecondes, PlayTimer])
     return(
         <div className="max-w-[40%] overflow-hidden py-10 px-5 rounded-[10px] bg-[#395998]">
             <div className="text-center pb-4 pt-1">
